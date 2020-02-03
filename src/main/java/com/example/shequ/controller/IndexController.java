@@ -1,8 +1,13 @@
 package com.example.shequ.controller;
 
 
+import com.example.shequ.dto.PaginationDTO;
+import com.example.shequ.dto.QuestionDTO;
+import com.example.shequ.mapper.QuestionMapper;
 import com.example.shequ.mapper.UserMapper;
+import com.example.shequ.model.Question;
 import com.example.shequ.model.User;
+import com.example.shequ.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class IndexController {
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     private UserMapper userMapper;
+    @Autowired(required = false)
+    private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request){
+    public String index(HttpServletRequest request,
+                        Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -35,6 +46,8 @@ public class IndexController {
             }
         }
 
+        PaginationDTO pagination = questionService.list(page,size);
+        model.addAttribute("pagination", pagination);
         return "index";
     }
 

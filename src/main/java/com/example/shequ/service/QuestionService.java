@@ -8,6 +8,7 @@ import com.example.shequ.model.Question;
 import com.example.shequ.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class QuestionService {
     @Autowired(required = false)
     private UserMapper userMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(Integer page, Integer size) {   //所有问题列表
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalCount = questionMapper.count();
         Integer totalPage;
@@ -59,7 +60,7 @@ public class QuestionService {
     }
 
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Integer userId, Integer page, Integer size) {  //我的问题列表
 
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
@@ -98,5 +99,15 @@ public class QuestionService {
 
         return paginationDTO;
 
+    }
+
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        User user = userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
+
+        return questionDTO;
     }
 }

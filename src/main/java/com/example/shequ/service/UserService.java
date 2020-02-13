@@ -12,13 +12,13 @@ public class UserService {
     private UserMapper userMapper;
 
     public void createOrUpdate(User user) {
-        User dbUser = userMapper.findByAccounTId(user.getAccountId());
+        User dbUser = userMapper.findByAccountId(user.getAccountId());
 
         if (dbUser == null) {
             //创建
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
-            userMapper.insert(user);
+            userMapper.create(user);
 
         } else {
             //更新

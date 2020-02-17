@@ -33,6 +33,9 @@
 
         <table tableName="t_user" domainObjectName="User"></table>
         <table tableName="t_question" domainObjectName="Question"></table>
+        <table tableName="t_comment" domainObjectName="Comment"></table>
+
+<!--        mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate-->
 
     </context>
 </generatorConfiguration>
